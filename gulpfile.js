@@ -1,57 +1,75 @@
-'use strict';
+"use strict";
+
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
 
 global.$ = {
-  package: require('./package.json'),
-  config: require('./gulp/config'),
-  path: {
-    task: require('./gulp/paths/tasks.js'),
-    jsFoundation: require('./gulp/paths/js.foundation.js'),
-    cssFoundation: require('./gulp/paths/css.foundation.js'),
-    app: require('./gulp/paths/app.js')
-  },
-  gulp: require('gulp'),
-  del: require('del'),
-  browserSync: require('browser-sync').create(),
-  gp: require('gulp-load-plugins')()
+    dev: isDevelopment,
+    browserSync: require('browser-sync').create(),
+    config: require('./gulp/config'),
+    cssunit: require('gulp-css-unit'),
+    del: require('del'),
+    imagemin: require("gulp-imagemin"),
+    imageminJpegRecompress: require('imagemin-jpeg-recompress'),
+    imageminPngquant: require('imagemin-pngquant'),
+    gulp: require('gulp'),
+    merge: require('merge-stream'),
+    package: require('./package.json'),
+    spritesmith: require('gulp.spritesmith'),
+    webpack: require('webpack-stream'),
+    webpackConfig: require('./webpack.config.js'),
+    gp: require('gulp-load-plugins')({
+        rename: {
+            'gulp-replace-task': 'replaceTask'
+        }
+    }),
+    path: {
+        task: require('./gulp/paths/tasks.js'),
+        jsFoundation: require('./gulp/paths/js.foundation.js'),
+        cssFoundation: require('./gulp/paths/css.foundation.js'),
+        app: require('./gulp/paths/app.js')
+    }
 };
 
-$.path.task.forEach(function(taskPath) {
-  require(taskPath)();
+$.path.task.forEach(function (taskPath) {
+    require(taskPath)();
 });
-
 $.gulp.task('default', $.gulp.series(
-  'clean',
-  'html',
-  'pug',
-  $.gulp.parallel(
+    'clean',
+    $.gulp.parallel(
+        'pug',
+        'css:foundation',
+        'js:foundation',
+        'js:process',
+        'copy:image',
+        'copy:fonts',
+        'copy:favicon',
+    ),
     'sass',
-    'js:foundation',
-    'js:process',
-    'copy:image',
-    'css:foundation',
-    'copy:favicon',
-    'copy:fonts',
-    'sprite:svg'
-  ),
-  $.gulp.parallel(
-    'watch',
-    'serve'
-  )
+    $.gulp.parallel(
+        'watch',
+        'serve'
+    )
 ));
 
 $.gulp.task('build', $.gulp.series(
-  'clean',
-  'html',
-  'pug',
-  $.gulp.parallel(
-    'sass',
-    'js:foundation',
-    'js:process',
-    'copy:image',
-    'css:foundation',
-    'copy:favicon',
-    'copy:fonts',
-    'sprite:svg'
-  )
+    'clean',
+    $.gulp.parallel(
+        'pug',
+        'css:foundation',
+        'js:foundation',
+        'js:process',
+        'copy:image',
+        'copy:fonts',
+        'copy:favicon'
+    ),
+    'sass'
+));
+
+$.gulp.task('image', $.gulp.series(
+    $.gulp.parallel(
+        'sprite:svg',
+        'sprite:png',
+        'optim:image'
+    )
 ));
 

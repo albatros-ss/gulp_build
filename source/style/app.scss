@@ -1,11 +1,16 @@
 // adjustment variables
-$body-font: 'robotoregular', Helvetica, serif;
 
 // colors
+$white: #ffffff;
+$black: #000000;
 
 // layout
 @import "_misc/fonts";
 @import "_misc/mixins";
 @import "_misc/adjustment";
+@import "_misc/svg";
+// @import "_misc/sprite";
 
 // styles
+@import 'common/**/*';
+@import "pages/**/*";

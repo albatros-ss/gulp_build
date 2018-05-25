@@ -1,13 +1,13 @@
-.svgicon {
-	display: inline-block;
-	width: 1rem;
-	height: 1rem;
-	fill: currentColor;
+.icon {
+    display: block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    font-size:1rem;
 }
 
-//{{#shapes}}
-//.icon-{{base}} {
-//	font-size:({{height.inner}}/10)*1rem;
-//	width:({{width.inner}}/{{height.inner}})*1em;
-//}
-//{{/shapes}}
+{{#shapes}}
+.icon-{{base}} {
+    width:({{width.inner}}/{{height.inner}})*1em;
+}
+{{/shapes}}
