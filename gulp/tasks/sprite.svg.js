@@ -20,7 +20,7 @@ module.exports = function () {
             .pipe($.gp.svgSprite({
                 mode: {
                     symbol: {
-                        sprite: "../assets/img/sprite.svg",
+                        sprite: "../../source/images/sprite.svg",
                         render: {
                             scss: {
                                 dest: '../../source/style/_misc/svg.scss',
