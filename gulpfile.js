@@ -38,13 +38,13 @@ $.gulp.task('default', $.gulp.series(
     $.gulp.parallel(
         'pug',
         'css:foundation',
+        'sass',
         'js:foundation',
         'js:process',
         'copy:image',
         'copy:fonts',
         'copy:favicon',
     ),
-    'sass',
     $.gulp.parallel(
         'watch',
         'serve'
@@ -56,13 +56,13 @@ $.gulp.task('build', $.gulp.series(
     $.gulp.parallel(
         'pug',
         'css:foundation',
+        'sass',
         'js:foundation',
         'js:process',
         'copy:image',
         'copy:fonts',
         'copy:favicon'
-    ),
-    'sass'
+    )
 ));
 
 $.gulp.task('image', $.gulp.series(
