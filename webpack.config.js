@@ -1,13 +1,16 @@
-const webpackStream = require('webpack-stream');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+
+const config = {
+    mode: 'development',
+    devtool: '#eval-source-map',
     entry: {
         app: './source/js/app.js',
+        admin: './source/js/admin.js',
     },
     output: {
         filename: '[name].min.js'
     },
-    devtool: '#eval-source-map',
     module: {
         rules: [
             {
@@ -16,25 +19,31 @@ module.exports = {
                 loader: 'babel-loader'
             }
         ]
-    }
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true
+            })
+        ],
+        runtimeChunk: false,
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
 };
 
 if (process.env.NODE_ENV === "production") {
-    module.exports.devtool = "#source-map";
-    module.exports.plugins = [
-        new webpackStream.webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: '"production"'
-            }
-        }),
-        new webpackStream.webpack.optimize.UglifyJsPlugin({
-            sourceMap: true,
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpackStream.webpack.LoaderOptionsPlugin({
-            minimize: true
-        })
-    ];
+    config.devtool = "#source-map";
+    config.mode = 'production';
 }
+
+module.exports = config;
