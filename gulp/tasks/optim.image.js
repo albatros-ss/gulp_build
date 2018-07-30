@@ -3,7 +3,7 @@
 module.exports = function () {
     $.gulp.task('optim:image', function () {
         return $.gulp.src(['./source/images/**/*.*',
-            '!./source/images/sprite.svg', 
+            '!./source/images/sprite.svg',
             '!./source/images/sprite.png'])
             .pipe($.imagemin([
                 $.imagemin.gifsicle({interlaced: true}),

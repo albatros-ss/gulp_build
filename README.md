@@ -7,7 +7,7 @@
 #### 2) cd path/to/...
 
 ##### 3) install the Gulp CLI tools globally
-    $ npm install gulpjs/gulp-cli -g
+    $ npm install gulp-cli -g
 
 #### 4) install node modules:
 
